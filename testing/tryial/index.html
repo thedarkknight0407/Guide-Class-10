@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .summary {
+            display: grid;
+            grid-template-rows: repeat(4, 75px);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* justify-content: space-between; */
+            margin: 20px 0;
+        }
+        
+        .card {
+            background: #e9f3ff;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 12px;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="summary">
+        <div class="card"><strong>Total Tasks:</strong> {{ total }}</div>
+        <div class="card"><strong>Completed:</strong> {{ completed }}</div>
+        <div class="card"><strong>Remaining:</strong> {{ remaining }}</div>
+        <div class="card"><strong>Daily Target:</strong> {{ target }}</div>
+      </div>
+</body>
+</html>

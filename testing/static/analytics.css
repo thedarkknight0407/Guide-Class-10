@@ -1,0 +1,33 @@
+.graphs-container{
+    display: grid;
+    grid-auto-rows: 1fr 1fr 1fr;
+    align-items: center;
+    grid-auto-flow: row;
+    min-height: 100vh;
+    gap: 5rem;
+    padding: 1em;
+    border-radius: 1em;
+}
+
+.graph{
+    height: 35rem;
+    width: 100%;
+    border-radius: 1em;
+    /* background: linear-gradient( 90deg, #007BFFaf, #00e5ffaf); */
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.graphs-container .graph img{
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid #454545;
+}
+
+.graphs-container .graph span{
+    font-size: 1.5rem;
+}

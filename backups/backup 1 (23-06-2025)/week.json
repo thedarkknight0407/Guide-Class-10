@@ -1,0 +1,16 @@
+{
+  "Foundation": {
+  "1": { "begin": "0106", "deadline": "1106" },
+  "2": { "begin": "0106", "deadline": "1806" },
+  "3": { "begin": "0106", "deadline": "2506" },
+  "4": { "begin": "2006", "deadline": "0407" },
+  "5": { "begin": "2706", "deadline": "0907" },
+  "6": { "begin": "0407", "deadline": "1807" },
+  "7": { "begin": "1107", "deadline": "2307" },
+  "8": { "begin": "1807", "deadline": "3007" },
+  "9": { "begin": "2507", "deadline": "0808" },
+  "10": { "begin": "1008", "deadline": "1308" },
+  "11": { "begin": "0808", "deadline": "2008" },
+  "12": { "begin": "0808", "deadline": "2008" }
+}
+}

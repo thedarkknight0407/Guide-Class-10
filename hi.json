@@ -1,0 +1,44 @@
+{
+  "Maths 1": {
+    "1": { "total": 11, "completed": 11 },
+    "2": { "total": 30, "completed": 7 },
+    "3": { "total": 26, "completed": 0 },
+    "4": { "total": 0, "completed": 0 },
+    "5": { "total": 0, "completed": 0 },
+    "6": { "total": 0, "completed": 0 },
+    "7": { "total": 0, "completed": 0 },
+    "8": { "total": 0, "completed": 0 },
+    "9": { "total": 0, "completed": 0 },
+    "10": { "total": 0, "completed": 0 },
+    "11": { "total": 0, "completed": 0 },
+    "12": { "total": 0, "completed": 0 }
+  },
+  "Stats 1": {
+    "1": { "total": 9, "completed": 9 },
+    "2": { "total": 10, "completed": 7 },
+    "3": { "total": 15, "completed": 0 },
+    "4": { "total": 0, "completed": 0 },
+    "5": { "total": 0, "completed": 0 },
+    "6": { "total": 0, "completed": 0 },
+    "7": { "total": 0, "completed": 0 },
+    "8": { "total": 0, "completed": 0 },
+    "9": { "total": 0, "completed": 0 },
+    "10": { "total": 0, "completed": 0 },
+    "11": { "total": 0, "completed": 0 },
+    "12": { "total": 0, "completed": 0 }
+  },
+  "Computational Thinking": {
+    "1": { "total": 13, "completed": 13 },
+    "2": { "total": 18, "completed": 10 },
+    "3": { "total": 12, "completed": 0 },
+    "4": { "total": 0, "completed": 0 },
+    "5": { "total": 0, "completed": 0 },
+    "6": { "total": 0, "completed": 0 },
+    "7": { "total": 0, "completed": 0 },
+    "8": { "total": 0, "completed": 0 },
+    "9": { "total": 0, "completed": 0 },
+    "10": { "total": 0, "completed": 0 },
+    "11": { "total": 0, "completed": 0 },
+    "12": { "total": 0, "completed": 0 }
+  }
+}

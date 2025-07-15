@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>IITM BS Progress Tracker</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>IITM BS Degree Tracker</h1>
+
+      <div class="progress-visual">
+        <h2>Progress Week {{current_week}}</h2>
+        <h2>Remaining Days: {{remaining_days}}</h2>
+        <form action="/" method="POST" id="week-form">
+          <label>Week:
+          <select name="week-progress" id="week-selector" required onchange="document.getElementById('week-form').submit()">
+            <option value="{{weeks[0]}}">select week</option>
+            {% for i in range(0, len(weeks)) %}
+            <option value="{{ weeks[i] }}">{{ weeks[i] }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        </form>
+
+        <!-- Overall Progress -->
+        <div class="progress-section">
+          <div class="circular-container">
+            <svg class="progress-ring" width="120" height="120">
+              <!-- Define the gradient -->
+              <defs>
+                <linearGradient
+                  id="gradientStrokeO"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop offset="0%" stop-color="#007bff" />
+                  <stop offset="100%" stop-color="#00c6ff" />
+                </linearGradient>
+              </defs>
+
+              <!-- Background circle -->
+              <circle
+                class="progress-ring__circle"
+                stroke="#ddd"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+              />
+
+              <!-- Foreground (progress) circle with gradient stroke -->
+              <circle
+                class="progress-ring__circle progress-ring__value"
+                stroke="url(#gradientStrokeO)"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+                style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[0][1] / 100 * 314) }};"
+              />
+            </svg>
+            <div class="progress-text">
+              {{ progress[0][1] }}% <br />
+              Overall
+            </div>
+          </div>
+
+          <!-- Sub 1 Progress -->
+          <div class="circular-container">
+            <svg class="progress-ring" width="120" height="120">
+              <!-- Define the gradient -->
+              <defs>
+                <linearGradient
+                  id="gradientStroke1"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop offset="0%" stop-color="#c600ff" />
+                  <stop offset="100%" stop-color="#7b00ff" />
+                </linearGradient>
+              </defs>
+
+              <!-- Background circle -->
+              <circle
+                class="progress-ring__circle"
+                stroke="#ddd"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+              />
+
+              <!-- Foreground (progress) circle with gradient stroke -->
+              <circle
+                class="progress-ring__circle progress-ring__value"
+                stroke="url(#gradientStroke1)"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+                style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[1][1] / 100 * 314) }};"
+              />
+            </svg>
+            <div class="progress-text">
+              {{ progress[1][1] }}% <br />
+              Maths - I
+            </div>
+          </div>
+
+          <!-- Sub 2 Progress -->
+          <div class="circular-container">
+            <svg class="progress-ring" width="120" height="120">
+              <!-- Define the gradient -->
+              <defs>
+                <linearGradient
+                  id="gradientStroke2"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop offset="0%" stop-color="#b0e57c" />
+                  <stop offset="100%" stop-color="#6ddf6d" />
+                </linearGradient>
+              </defs>
+
+              <!-- Background circle -->
+              <circle
+                class="progress-ring__circle"
+                stroke="#ddd"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+              />
+
+              <!-- Foreground (progress) circle with gradient stroke -->
+              <circle
+                class="progress-ring__circle progress-ring__value"
+                stroke="url(#gradientStroke2)"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+                style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[2][1] / 100 * 314) }};"
+              />
+            </svg>
+            <div class="progress-text">
+              {{ progress[2][1] }}% <br />
+              Stats - I
+            </div>
+          </div>
+
+          <!-- Sub 3 Progress -->
+          <div class="circular-container">
+            <svg class="progress-ring" width="120" height="120">
+              <!-- Define the gradient -->
+              <defs>
+                <linearGradient
+                  id="gradientStroke3"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop offset="0%" stop-color="#feb47b " />
+                  <stop offset="100%" stop-color="#ff7e5f " />
+                </linearGradient>
+              </defs>
+
+              <!-- Background circle -->
+              <circle
+                class="progress-ring__circle"
+                stroke="#ddd"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+              />
+
+              <!-- Foreground (progress) circle with gradient stroke -->
+              <circle
+                class="progress-ring__circle progress-ring__value"
+                stroke="url(#gradientStroke3)"
+                stroke-width="10"
+                fill="transparent"
+                r="50"
+                cx="60"
+                cy="60"
+                style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[3][1] / 100 * 314) }};"
+              />
+            </svg>
+            <div class="progress-text">
+              {{ progress[3][1] }}% <br />
+              CT
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="card"><strong>Total Tasks:</strong> {{ total }}</div>
+        <div class="card"><strong>Completed:</strong> {{ completed }}</div>
+        <div class="card"><strong>Remaining:</strong> {{ remaining }}</div>
+        <div class="card"><strong>Daily Target:</strong> {{ target }}</div>
+      </div>
+
+      <div class="today-target">
+        <h2>Today's Targets</h2>
+        <form action="/" method="POST" class="todo-form" onsubmit="copyWeekValue()">
+          <input type="hidden" name="week-progress" id="week-hidden">
+          {% for i in range(len(todo)) %}
+          <div class="todo-item">
+            <div class="left-side">
+              <input type="checkbox" id="{{[i]}}" class="todo-task" name="{{i}}" required>
+              <label for="{{[i]}}">{{todo[i]}}</label>
+            </div>
+          </div>
+          {% endfor %}
+          
+          <div class="todo-item todo-submit">
+            <div class="left-side">
+              <input type="checkbox" id="SUBMIT-CHK" class="todo-task" name="todo-chk" value="done" required>
+              <label for="todo-chk">ALL DONE</label>
+            </div>
+            <button type="submit" onclick="{{alldone()}}; window.location.reload(2)">Submit</button>
+          </div>
+
+        </form>
+      </div>
+
+      <h2>Update Data</h2>
+      <button type="button" class="collapsible">Expand</button>
+      <form action="/update" method="POST" class="update-form active">
+        <label
+          >Subject:
+          <select name="subject">
+            {% for subject in subjects %}
+            <option value="{{ subject }}">{{ subject }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label
+          >Week:
+          <select name="week">
+            {% for week in weeks %}
+            <option value="{{ week }}">{{ week }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label
+          >Total Tasks: <input type="number" name="total" required
+        /></label>
+        <label
+          >Completed Tasks: <input type="number" name="completed" required
+        /></label>
+        <button type="submit">Update</button>
+      </form>
+
+      <h2>Subject Tables</h2>
+      <button type="button" class="collapsible">Expand</button>
+      <div class="progress-table active">
+        {% for subject in subjects %}
+        <h2>{{ subject }}</h2>
+        <table>
+          <tr>
+            <th>Week</th>
+            <th>Total</th>
+            <th>Completed</th>
+          </tr>
+          {% for week in range(1,13) %}
+          <tr>
+            <td>{{ week }}</td>
+            <td>{{ data[subject][week|string]['total'] }}</td>
+            <td>{{ data[subject][week|string]['completed'] }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    function copyWeekValue() {
+      const selectedWeek = document.getElementById("week-selector").value;
+      document.getElementById("week-hidden").value = selectedWeek;
+      }
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function () {
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+          this.innerHTML = "Expand";
+        } else {
+          content.style.display = "block";
+          this.innerHTML = "Collapse";
+        }
+      });
+    }
+
+    
+  </script>
+</html>
