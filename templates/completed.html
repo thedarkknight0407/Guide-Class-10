@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JEE Prep</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+      * {
+        font-family: "poppins";
+      }
+      body {
+        padding: 2rem 3rem;
+      }
+      .container-fluid {
+        border-radius: 1rem;
+        background: #f0f4f8;
+        min-height: 100vh;
+        max-width: 1260px;
+      }
+      .heading {
+        width: 100%;
+      }
+      hr {
+        border-color: rgb(84, 118, 255);
+        border-width: 0.4rem;
+        width: 100%;
+        border-radius: 0.5rem;
+      }
+      .progress-container {
+        background: #ffffff;
+        width: 100%;
+        min-height: 30vh;
+        border-radius: 0.4rem;
+      }
+      .sub {
+        width: 100%;
+        .h4 {
+          width: 15%;
+          text-align: end;
+          align-self: flex-end;
+        }
+      }
+
+      .progress-bar {
+        opacity: 1;
+        width: 5%;
+      }
+      .subject {
+        justify-content: space-between;
+        cursor: pointer;
+      }
+
+      table {
+        text-align: center;
+      }
+      table,
+      td,
+      th {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid d-flex align-items-center p-4 flex-column">
+      <h3 class="h1">Study Tracker</h3>
+      <hr class="border border-primary border-3 rounded opacity-100" />
+      <div class="heading d-flex justify-content-between my-3">
+        <h3 class="h3 bg-warning bg-gradient p-2 rounded">
+          Streak: <span>{{streak}}</span>
+        </h3>
+        <h3 class="h3 p-2 rounded">Date: <span>{{date}}</span></h3>
+      </div>
+
+      <div
+        class="ongoing-chapters progress-container m-4 py-3 d-flex flex-column px-4"
+      >
+        <h3 class="h3 text-decoration-underline mb-4">
+          Confirm Chapter Completetion
+        </h3>
+        <h3 class="h4 text-capitalize mb-4">{{subject}}</h3>
+        <h3 class="h4 text-uppercase text-danger mb-4">{{chapter}}</h3>
+        <button
+          onclick="goToRoute()"
+          type="button"
+          class="btn btn-primary"
+          style="width: 15%"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function goToRoute() {
+      let comp_topic = localStorage.getItem("comp_topic");
+      let sub = localStorage.getItem("sub");
+      window.location.href = `/completetion?sub=${sub}&chapter=${comp_topic}`;
+    }
+  </script>
+</html>

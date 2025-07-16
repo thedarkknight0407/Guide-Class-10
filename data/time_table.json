@@ -1,0 +1,8 @@
+{
+  "monday": ["chemistry", "economics"],
+  "tuesday": ["physics", "civics"],
+  "wednesday": ["maths", "geography"],
+  "thursday": ["maths", "history"],
+  "friday": ["chemistry", "geography"],
+  "saturday": ["biology", "history"]
+}

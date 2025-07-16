@@ -2,376 +2,251 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>IITM BS Progress Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Tracker</title>
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
     />
-    <link 
-      rel="stylesheet"
-      href="{{ url_for('static', filename='media.css') }}"
-
-    />
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
   </head>
-  <body>
+  <body
+    class="d-flex justify-content-center align-items-center py-4 bg-primary-subtle"
+    style="min-height: 100vh"
+  >
+    <div
+      class="main-container container-fluid d-flex align-items-center rounded bg-light py-5 px-4 flex-column"
+    >
+      <div
+        class="header d-flex align-items-center flex-column"
+        style="width: 100%"
+      >
+        <h1 class="display-2">Study Tracker</h1>
 
-    
+        <div
+          class="container d-flex align-items-center justify-content-between px-4"
+        >
+          <h2 class="h3 bg-warning p-2 rounded">Streak: {{streak}}</h2>
+          <h2 class="h3 bg-warning p-2 rounded">Date: {{date}}</h2>
+        </div>
+        <hr
+          class="opacity-100 border border-3 border-primary rounded"
+          style="width: 100%"
+        />
+      </div>
 
-
-    <div class="container">
-      <aside id="sidebar" class="sidebar-active">
-
-        <ul>
-          <li>
-            <span class="logo">IITMBS</span>
-            <button id="toggle-btn" onclick="toggleSidebar()">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+      <div class="todo-section container mt-5 p-3">
+        <h2 class="h1 p-3 bg-warning rounded" style="--bs-bg-opacity: 0.4">
+          Today's Targets
+        </h2>
+        <hr class="border border-primary rounded" />
+        <div class="targets d-flex flex-column gap-2 p-3">
+          {% for target in targets %}
+          <span
+            class="h4 d-flex justify-content-between align-items-center px-2 m-0 text-primary"
+            data-sub="{{target[0]}}"
+          >
+            {{target[1].title()}}
+            <button class="btn btn-primary" onclick="completed(this)">
+              Completed
             </button>
-          </li>
-          <li id="dashboard" class="ham-active">
-            <a href="/">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"/></svg>
-              <span>Dashboard</span>
-            </a>  
-          </li>
-          <li id="graphs">
-            <a href="/analytics">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
-              <span>Analytics</span>
-            </a>  
-          </li>
-          <li id="idk"></li>
-        </ul>
-      </aside>
-    
-      <main>
-
-        <h1>IITM BS Degree Tracker</h1>
-
-        <!-- Progress Bar Section -->
-        <div class="progress-visual section">
-          <div class='header'>
-            <h2 class="progress-week">Progress: Week {{current_week}}</h2>
-            <h2 class="remaining-days">Remaining Days: <span style="color: {{danger_color}}">{{remaining_days}}</span></h2>
-          </div>
-          <form action="/" method="POST" id="week-form">
-            <label>Week:
-            <select name="week-progress" id="week-selector" required onchange="document.getElementById('week-form').submit()">
-              <option value="{{weeks[0]}}">select week</option>
-              {% for i in range(0, len(weeks)) %}
-              <option value="{{ weeks[i] }}">{{ weeks[i] }}</option>
-              {% endfor %}
-            </select>
-          </label>
-          </form>
-
-          <!-- Overall Progress -->
-          <div class="progress-section">
-            <div class="circular-container">
-              <svg class="progress-ring" width="120" height="120">
-                <!-- Define the gradient -->
-                <defs>
-                  <linearGradient
-                    id="gradientStrokeO"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stop-color="#007bff" />
-                    <stop offset="100%" stop-color="#00c6ff" />
-                  </linearGradient>
-                </defs>
-
-                <!-- Background circle -->
-                <circle
-                  class="progress-ring__circle"
-                  stroke="#ddd"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                />
-
-                <!-- Foreground (progress) circle with gradient stroke -->
-                <circle
-                  class="progress-ring__circle progress-ring__value"
-                  stroke="url(#gradientStrokeO)"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                  style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[0][1] / 100 * 314) }};"
-                />
-              </svg>
-              <div class="progress-text">
-                {{ progress[0][1] }}% <br />
-                Overall
-              </div>
-            </div>
-
-            <!-- Sub 1 Progress -->
-            <div class="circular-container">
-              <svg class="progress-ring" width="120" height="120">
-                <!-- Define the gradient -->
-                <defs>
-                  <linearGradient
-                    id="gradientStroke1"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stop-color="#c600ff" />
-                    <stop offset="100%" stop-color="#7b00ff" />
-                  </linearGradient>
-                </defs>
-
-                <!-- Background circle -->
-                <circle
-                  class="progress-ring__circle"
-                  stroke="#ddd"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                />
-
-                <!-- Foreground (progress) circle with gradient stroke -->
-                <circle
-                  class="progress-ring__circle progress-ring__value"
-                  stroke="url(#gradientStroke1)"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                  style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[1][1] / 100 * 314) }};"
-                />
-              </svg>
-              <div class="progress-text">
-                {{ progress[1][1] }}% <br />
-                Maths - I
-              </div>
-            </div>
-
-            <!-- Sub 2 Progress -->
-            <div class="circular-container">
-              <svg class="progress-ring" width="120" height="120">
-                <!-- Define the gradient -->
-                <defs>
-                  <linearGradient
-                    id="gradientStroke2"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stop-color="#b0e57c" />
-                    <stop offset="100%" stop-color="#6ddf6d" />
-                  </linearGradient>
-                </defs>
-
-                <!-- Background circle -->
-                <circle
-                  class="progress-ring__circle"
-                  stroke="#ddd"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                />
-
-                <!-- Foreground (progress) circle with gradient stroke -->
-                <circle
-                  class="progress-ring__circle progress-ring__value"
-                  stroke="url(#gradientStroke2)"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                  style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[2][1] / 100 * 314) }};"
-                />
-              </svg>
-              <div class="progress-text">
-                {{ progress[2][1] }}% <br />
-                Stats - I
-              </div>
-            </div>
-
-            <!-- Sub 3 Progress -->
-            <div class="circular-container">
-              <svg class="progress-ring" width="120" height="120">
-                <!-- Define the gradient -->
-                <defs>
-                  <linearGradient
-                    id="gradientStroke3"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stop-color="#feb47b " />
-                    <stop offset="100%" stop-color="#ff7e5f " />
-                  </linearGradient>
-                </defs>
-
-                <!-- Background circle -->
-                <circle
-                  class="progress-ring__circle"
-                  stroke="#ddd"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                />
-
-                <!-- Foreground (progress) circle with gradient stroke -->
-                <circle
-                  class="progress-ring__circle progress-ring__value"
-                  stroke="url(#gradientStroke3)"
-                  stroke-width="10"
-                  fill="transparent"
-                  r="50"
-                  cx="60"
-                  cy="60"
-                  style="stroke-dasharray: 314; stroke-dashoffset: {{ 314 - (progress[3][1] / 100 * 314) }};"
-                />
-              </svg>
-              <div class="progress-text">
-                {{ progress[3][1] }}% <br />
-                CT
-              </div>
-            </div>
-          </div>
+          </span>
+          <hr />
+          {% endfor %}
         </div>
+      </div>
 
-        <!-- Summary Section -->
-        <div class="summary section">
-          <div class="card"><strong>Total Tasks:</strong> {{ total }}</div>
-          <div class="card"><strong>Completed:</strong> {{ completed }}</div>
-          <div class="card"><strong>Remaining:</strong> {{ remaining }}</div>
-          <div class="card"><strong>Daily Target:</strong> {{ target }}</div>
+      <div class="my-5" style="width: 100%">
+        <hr class="border border-primary border-4 rounded opacity-75" />
+      </div>
+
+      <div class="upcoming-test-section container my-3 p-3" style="width: 100%">
+        <div
+          class="heading d-flex justify-content-between align-items-center pe-3 p-3 bg-warning rounded"
+          style="--bs-bg-opacity: 0.4"
+        >
+          <h2 class="h1">Upcoming Test</h2>
         </div>
-
-        <!-- Todo List Section -->
-        <div class="today-target section">
-          <h2>Today's Targets</h2>
-          <form action="/" method="POST" class="todo-form" onsubmit="copyWeekValue()">
-            <input type="hidden" name="week-progress" id="week-hidden">
-            {% for i in range(len(todo)) %}
-            <div class="todo-item">
-              <div class="left-side">
-                <input type="checkbox" id="{{[i]}}" class="todo-task" name="{{i}}" required>
-                <label for="{{[i]}}">{{todo[i]}}</label>
-              </div>
-            </div>
-            {% endfor %}
-            
-            <div class="todo-item todo-submit">
-              <div class="left-side">
-                <input type="checkbox" id="SUBMIT-CHK" class="todo-task" name="todo-chk" value="done" required>
-                <label for="todo-chk">ALL DONE</label>
-              </div>
-              <button type="submit" onclick="{{alldone()}}; window.location.reload(2)">Submit</button>
-            </div>
-
-          </form>
-        </div>
-
-        <!-- Update Data Section-->
-        <div class="update-data section">
-          <h2>Update Data</h2>
-          <button type="button" class="collapsible">Expand</button>
-          <form action="/update" method="POST" class="update-form active">
-            <label
-              >Subject:
-              <select name="subject">
-                {% for subject in subjects %}
-                <option value="{{ subject }}">{{ subject }}</option>
-                {% endfor %}
-              </select>
-            </label>
-            <label
-              >Week:
-              <select name="week">
-                {% for week in weeks %}
-                <option value="{{ week }}">{{ week }}</option>
-                {% endfor %}
-              </select>
-            </label>
-            <label
-              >Total Tasks: <input type="number" name="total" required
-            /></label>
-            <label
-              >Completed Tasks: <input type="number" name="completed" required
-            /></label>
-            <button type="submit">Update</button>
-          </form>
-        </div>
-
-        <!-- Subject Data Table Section -->
-        <div class="subject-data section">
-          <h2>Subject Tables</h2>
-          <button type="button" class="collapsible">Expand</button>
-          <div class="progress-table active">
-            {% for subject in subjects %}
-            <h2>{{ subject }}</h2>
+        <hr class="border border-primary rounded" />
+        <div class="syllabus d-flex flex-column gap-2 p-3">
+          <div class="d-flex justify-content-center flex-column sub h5">
             <table>
-              <tr>
-                <th>Week</th>
-                <th>Total</th>
-                <th>Completed</th>
-              </tr>
-              {% for week in range(1,13) %}
-              <tr>
-                <td>{{ week }}</td>
-                <td>{{ data[subject][week|string]['total'] }}</td>
-                <td>{{ data[subject][week|string]['completed'] }}</td>
-              </tr>
-              {% endfor %}
+              <thead class="border border-dark">
+                <th class="py-3 text-center ps-2">S No.</th>
+                <th class="py-3 text-center">Subject</th>
+                <th class="py-3 text-center">Topic Name</th>
+                <th class="py-3 text-center">Question Count</th>
+                <th class="py-3 text-center">Book</th>
+                <th class="py-3 text-center">Date</th>
+              </thead>
+              <tbody class="border border-dark">
+                {% for test in u_tests %}
+                <tr>
+                  {% for i in test %}
+                  <td class="text-center">{{i.title()}}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
-            {% endfor %}
           </div>
         </div>
-      </main>
+      </div>
 
+      <div class="my-5" style="width: 100%">
+        <hr class="border border-primary border-4 rounded opacity-75" />
+      </div>
+
+      <div class="prev-test-scores container my-3 p-3 d-flex flex-column h5">
+        <h2 class="h1 p-3 bg-warning rounded" style="--bs-bg-opacity: 0.4">
+          Prev Test Scores
+        </h2>
+        <hr class="border border-primary rounded" />
+        <table class="mt-3">
+          <thead class="border border-dark">
+            <th class="text-center py-3">S No.</th>
+            <th class="text-center py-3">Subject</th>
+            <th class="text-center py-3">Marks Scored</th>
+            <th class="text-center py-3">Total Marks</th>
+          </thead>
+          <tbody class="border border-dark">
+            {% for i in range(len(tests)) %}
+            <tr>
+              <td class="text-center">{{i+1}}.</td>
+              {% for j in tests[i]%}
+              <td class="text-center">{{j}}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="my-3">
+          <button class="btn btn-primary btn-lg" onclick="addTest()">
+            Add Test Score
+          </button>
+        </div>
+      </div>
+
+      <div class="my-5" style="width: 100%">
+        <hr class="border border-primary border-4 rounded opacity-75" />
+      </div>
+
+      <div class="prog container my-3 p-3 d-flex flex-column h5">
+        <h2 class="h1 bg-warning p-3 rounded" style="--bs-bg-opacity: 0.4">
+          Progress Section
+        </h2>
+        <div
+          class="progress-section p-3 d-flex justify-content-around align-items-start flex-column"
+        >
+          <!-- overall -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Overall:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[0]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <br />
+
+          <!-- math -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Math:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[1]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <br />
+
+          <!-- physics -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Physics:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[2]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <!-- chemistry -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Chemistry:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[3]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <!-- biology -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Biology:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[4]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <br />
+
+          <!-- history -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">History:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[5]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <!-- civics -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Civics:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[6]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <!-- geography -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Geography:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[7]}}%; height: 0%"
+            ></div>
+          </div>
+
+          <!-- economics -->
+          <div class="sub d-flex align-items-center" style="width: 100%">
+            <div class="h4 pe-3 text-end align-self-end">Economics:</div>
+            <div
+              class="progress-bar border border-primary border-3 opacity-75 rounded"
+              style="width: {{progress[8]}}%; height: 0%"
+            ></div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-    
-    function copyWeekValue() {
-      const selectedWeek = document.getElementById("week-selector").value;
-      document.getElementById("week-hidden").value = selectedWeek;
-      }
+    var comp_topic = "";
+    var sub = "";
+    function completed(topic) {
+      comp_topic = topic.parentElement.innerText;
+      sub = topic.parentElement.dataset.sub;
+      comp_topic = comp_topic.slice(0, -9);
 
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function () {
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-          content.style.display = "none";
-          this.innerHTML = "Expand";
-        } else {
-          content.style.display = "block";
-          this.innerHTML = "Collapse";
-        }
-      });
+      localStorage.setItem("comp_topic", comp_topic);
+      localStorage.setItem("sub", sub);
+
+      window.location.href = `/update?sub=${sub}&chapter=${comp_topic}`;
     }
 
-    //sidebar function
-    const togglebtn = document.getElementById("toggle-btn")
-    const sideabar = document.getElementById('sidebar')
-    function toggleSidebar() {
-      sidebar.classList.toggle('sidebar-active')
+    function addTest() {
+      window.location.href = "/addTest";
     }
-
   </script>
 </html>
